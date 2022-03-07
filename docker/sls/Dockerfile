@@ -1,5 +1,6 @@
-FROM python:3.8.12-slim-bullseye
-
+# Docker内でdockerコマンドを利用するためのイメージ: https://hub.docker.com/_/docker
+# Docker outside of Docker: https://esakat.github.io/esakat-blog/posts/docker-in-docker/
+FROM docker:20.10.12-dind
 
 ARG proxy
 ARG no_proxy
@@ -12,22 +13,9 @@ ENV NO_PROXY=$no_proxy
 
 RUN printenv
 
-RUN apt update && apt install -y curl jq locales
-RUN curl -sL https://deb.nodesource.com/setup_lts.x | bash -
-RUN apt update && \
-    apt install -y nodejs && \
-    apt clean
-
-RUN echo 'ja_JP.UTF-8 UTF-8' >> /etc/locale.gen && \
-    locale-gen && \
-    update-locale LANG=ja_JP.UTF-8
-
-RUN ln -sf /usr/share/zoneinfo/Asia/Tokyo /etc/localtime
-
 COPY sls_version .
-
-RUN npm update -g npm && \
-    npm install -g serverless@`cat sls_version`
+RUN apk update && apk add --no-cache nodejs npm
+RUN npm install -g serverless@`cat sls_version`
 
 RUN mkdir /opt/sls
 WORKDIR /opt/sls
