@@ -10,6 +10,7 @@ CONTAINER_ID=$(cat /dev/urandom | tr -dc 'a-zA-Z0-9' | fold -w 8 | head -n1)
 
 invoke docker run \
   --rm \
+  --privileged \
   -v ${PROJECT_ROOT}:/opt/sls \
   -v ${HOME}/.aws:/root/.aws:ro \
   ${APP_NAME}/sls:latest sls $*

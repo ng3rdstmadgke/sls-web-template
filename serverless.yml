@@ -23,10 +23,8 @@ frameworkVersion: '3'
 provider:
   name: aws
   runtime: python3.8
-
-# you can overwrite defaults here
-#  stage: dev
-#  region: us-east-1
+  region: ap-northeast-1
+  stage: dev
 
 # you can add statements to the Lambda function's IAM Role here
 #  iam:
@@ -51,6 +49,10 @@ provider:
 #    variable1: value1
 
 # you can add packaging information here
+package:
+  patterns:
+    - '!**' # すべてのファイルをexclude
+    - 'api/**' # apiディレクトリは以下をinclude
 #package:
 #  patterns:
 #    - '!exclude-me.py'
@@ -59,8 +61,17 @@ provider:
 #    - include-me-dir/**
 
 functions:
-  hello:
-    handler: handler.hello
+  api:
+    handler: api.main.handler
+    events:
+      - http:
+          path: /{path+}
+          method: ANY
+          private: false
+          cors: true
+    layers:
+      - Ref: PythonRequirementsLambdaLayer
+
 #    The following are a few example events you can configure
 #    NOTE: Please make sure to change your handler code to work with those events
 #    Check the event documentation for details
@@ -112,3 +123,14 @@ functions:
 #     NewOutput:
 #       Description: "Description for the output"
 #       Value: "Some output value"
+
+plugins:
+  - serverless-python-requirements
+
+custom:
+  # serverless-python-requirements: https://www.serverless.com/plugins/serverless-python-requirements
+  # NOTE: requirements.txtはserverless.ymlと同じディレクトリに配置する必要がある
+  # TODO: Layerを別プロジェクトに分ける: https://blog.ikedaosushi.com/entry/2019/04/07/012612
+  pythonRequirements:
+    dockerizePip: true # deploy時のパッケージングの際にpythonライブラリのビルドをdockerで行う設定
+    layer: true # レイヤーを作成する
