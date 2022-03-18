@@ -20,11 +20,22 @@ service: sls-web-template
 # Check out our docs for more details
 frameworkVersion: '3'
 
+custom:
+  # serverless-python-requirements: https://www.serverless.com/plugins/serverless-python-requirements
+  # NOTE: requirements.txtはserverless.ymlと同じディレクトリに配置する必要がある
+  # TODO: Layerを別プロジェクトに分ける: https://blog.ikedaosushi.com/entry/2019/04/07/012612
+  defaultStage: dev
+  pythonRequirements:
+    dockerizePip: true # deploy時のパッケージングの際にpythonライブラリのビルドをdockerで行う設定
+    layer: true # レイヤーを作成する
+
 provider:
   name: aws
   runtime: python3.8
   region: ap-northeast-1
-  stage: dev
+  stage: ${opt:stage, self:custom.defaultStage}
+  environment:
+    APP_NAME: sls-web-template
 
 # you can add statements to the Lambda function's IAM Role here
 #  iam:
@@ -69,6 +80,9 @@ functions:
           method: ANY
           private: false
           cors: true
+    environment:
+      STAGE: ${opt:stage, self:custom.defaultStage}
+      SECRET_KEY: ${env:SECRET_KEY}
     layers:
       - Ref: PythonRequirementsLambdaLayer
 
@@ -126,11 +140,3 @@ functions:
 
 plugins:
   - serverless-python-requirements
-
-custom:
-  # serverless-python-requirements: https://www.serverless.com/plugins/serverless-python-requirements
-  # NOTE: requirements.txtはserverless.ymlと同じディレクトリに配置する必要がある
-  # TODO: Layerを別プロジェクトに分ける: https://blog.ikedaosushi.com/entry/2019/04/07/012612
-  pythonRequirements:
-    dockerizePip: true # deploy時のパッケージングの際にpythonライブラリのビルドをdockerで行う設定
-    layer: true # レイヤーを作成する

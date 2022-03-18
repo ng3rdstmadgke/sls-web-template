@@ -10,6 +10,7 @@ CONTAINER_ID=$(cat /dev/urandom | tr -dc 'a-zA-Z0-9' | fold -w 8 | head -n1)
 
 invoke docker run \
   --rm \
+  --env-file ${PROJECT_ROOT}/.env \
   -v ${PROJECT_ROOT}:/opt/sls \
   -v /root/.cache:/root/.cache \
   -v ${HOME}/.aws:/root/.aws:ro \
