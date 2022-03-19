@@ -22,15 +22,14 @@ EOS
 exit 1
 }
 
-SCRIPT_DIR=$(cd $(dirname $0); pwd)
-PROJECT_ROOT=$(cd $(dirname $0)/..; pwd)
-APP_NAME=$(cat ${PROJECT_ROOT}/app_name | tr '[A-Z]' '[a-z]')
 proxy="http://xxxxxxx.jp:7080"
 no_proxy="169.254.169.254,169.254.170.2"
 
-
-cd "$PROJECT_ROOT"
+SCRIPT_DIR=$(cd $(dirname $0); pwd)
+PROJECT_ROOT=$(cd $(dirname $0)/..; pwd)
 source "${SCRIPT_DIR}/lib/utils.sh"
+
+APP_NAME=$(get_app_name ${PROJECT_ROOT}/app_name)
 
 TAG=latest
 OPTIONS=
@@ -49,5 +48,7 @@ done
 
 [ "${#args[@]}" != 0 ] && usage
 
+cd "$PROJECT_ROOT"
 set -e
 invoke docker build $OPTIONS --rm -f docker/sls/Dockerfile -t "${APP_NAME}/sls:${TAG}" .
+invoke docker build $OPTIONS --rm -f docker/api/Dockerfile -t "${APP_NAME}/api:${TAG}" .

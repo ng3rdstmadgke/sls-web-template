@@ -1,0 +1,14 @@
+---
+version: '3.2'
+services:
+  api:
+    image: ${APP_NAME}/api:latest
+    container_name: api
+    volumes:
+      - type: bind
+        source: "${API_DIR}"
+        target: "/opt/app"
+    command: /usr/local/bin/entrypoint.sh --debug
+    env_file:
+      - "${ENV_PATH}"
+    network_mode: host

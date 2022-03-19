@@ -1,0 +1,9 @@
+---
+version: '3.2'
+services:
+  api:
+    image: ${APP_NAME}/api:latest
+    container_name: api
+    env_file:
+      - "${ENV_PATH}"
+    network_mode: host
