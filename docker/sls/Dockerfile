@@ -19,3 +19,7 @@ RUN npm install -g serverless@`cat sls_version`
 
 RUN mkdir /opt/sls
 WORKDIR /opt/sls
+COPY package.json .
+COPY package-lock.json .
+RUN npm install
+COPY . .
