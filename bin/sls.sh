@@ -14,6 +14,8 @@ invoke docker run \
   --env-file ${PROJECT_ROOT}/.env \
   -v ${PROJECT_ROOT}/api:/opt/sls/api \
   -v ${PROJECT_ROOT}/requirements.txt:/opt/sls/requirements.txt \
+  -v ${PROJECT_ROOT}/serverless.yml:/opt/sls/serverless.yml \
+  -v ${PROJECT_ROOT}/profile:/opt/sls/profile \
   -v /root/.cache:/root/.cache \
   -v ${HOME}/.aws:/root/.aws:ro \
   -v /var/run/docker.sock:/var/run/docker.sock \

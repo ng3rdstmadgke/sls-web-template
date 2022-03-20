@@ -1,8 +1,7 @@
 service: sls-web-template
 frameworkVersion: '3'
 custom:
-  events: ${file(./customConfig.yml):myevents}
-  defaultStage: dev
+  profile: ${file(./profile/${opt:stage}.yml)}
   # serverless-python-requirements: https://www.serverless.com/plugins/serverless-python-requirements
   # NOTE: requirements.txtはserverless.ymlと同じディレクトリに配置する必要がある
   # TODO: Layerを別プロジェクトに分ける: https://blog.ikedaosushi.com/entry/2019/04/07/012612
@@ -13,10 +12,16 @@ custom:
 provider:
   name: aws
   runtime: python3.8
-  region: ap-northeast-1
-  stage: ${opt:stage, self:custom.defaultStage}
+  stage: ${opt:stage, self:custom.profile.stage, "dev"}
+  profile: ${self:custom.profile.awsProfile}
+  region: ${self:custom.profile.awsRegion}
+  deploymentBucket: ${self:custom.profile.deploymentBucket}
+  vpc:
+    securityGroupIds: ${self:custom.profile.securityGroupIds}
+    subnetIds: ${self:custom.profile.subnetIds}
   environment:
-    APP_NAME: sls-web-template
+    APP_NAME: ${self:service}
+    STAGE: ${self:provider.stage}
 
 # デプロイパッケージに含めるファイル/ディレクトリを指定
 package:
@@ -27,6 +32,7 @@ package:
 functions:
   api:
     handler: api.main.handler
+    timeout: 29
     role: ApiRole
     events:
       - http:
@@ -34,9 +40,7 @@ functions:
           method: ANY
           private: false
           cors: true
-    environment:
-      STAGE: ${opt:stage, self:custom.defaultStage}
-      SECRET_KEY: ${env:SECRET_KEY}
+    environment: ${self:custom.profile.apienv}
     layers:
       - Ref: PythonRequirementsLambdaLayer
 

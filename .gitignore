@@ -46,3 +46,6 @@ node_modules
 # Other
 ############################
 .vscode/
+
+profile/*
+!profile/sample.yml

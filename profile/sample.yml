@@ -1,0 +1,11 @@
+stage: dev
+securityGroupIds:
+  - sg-xxxxxxxxxxxxxxxxx
+subnetIds:
+  - subnet-xxxxxxxxxxxxxxxxx
+  - subnet-xxxxxxxxxxxxxxxxx
+awsProfile: "default"
+awsRegion: "ap-northeast-1"
+deploymentBucket: "xxxxxxxxxxxxxxxxxxxxx"
+apienv:
+  SECRET_KEY: "xxxxxxxxxxxxxxxxxxxx"
