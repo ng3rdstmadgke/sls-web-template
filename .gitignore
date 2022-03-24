@@ -41,11 +41,11 @@ __pycache__/
 # node
 ############################
 node_modules
+api/front
 
 ############################
 # Other
 ############################
 .vscode/
-
-profile/*
-!profile/sample.yml
+/profile/*
+!/profile/sample.yml

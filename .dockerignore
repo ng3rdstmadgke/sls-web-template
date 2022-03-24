@@ -1,4 +1,7 @@
-.git/
-.venv/
-node_modules/
-.serverless/
+**/.git/
+**/.venv/
+**/.serverless/
+**/.vscode/
+**/.nuxt/
+**/node_modules/
+api/front
