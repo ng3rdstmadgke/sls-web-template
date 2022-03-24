@@ -28,7 +28,6 @@ exit 1
 
 SCRIPT_DIR="$(cd $(dirname $0); pwd)"
 PROJECT_ROOT="$(cd ${SCRIPT_DIR}/..; pwd)"
-API_DIR="$(cd ${PROJECT_ROOT}/api; pwd)"
 FRONT_DIR="$(cd ${PROJECT_ROOT}/front; pwd)"
 CONTAINER_DIR="$(cd ${PROJECT_ROOT}/docker; pwd)"
 DEBUG=
@@ -58,7 +57,7 @@ api_env_tmp="$(mktemp)"
 cat "$ENV_PATH" > "$api_env_tmp"
 
 trap "docker-compose -f docker-compose.yml down; rm $api_env_tmp $front_env_tmp" EXIT
-invoke export API_DIR="$API_DIR"
+invoke export PROJECT_ROOT="$PROJECT_ROOT"
 invoke export FRONT_DIR="$FRONT_DIR"
 invoke export ENV_PATH="$api_env_tmp"
 invoke export APP_NAME=$(get_app_name ${PROJECT_ROOT}/app_name)

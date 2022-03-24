@@ -3,5 +3,6 @@
 **/.serverless/
 **/.vscode/
 **/.nuxt/
+**/dist/
 **/node_modules/
 api/front

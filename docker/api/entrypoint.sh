@@ -39,9 +39,9 @@ export HOME=/home/app
 chown -R app:app /opt/app
 # 作成したユーザーでアプリケーションサーバーを起動
 if [ -n "$DEBUG" ]; then
-  echo "printenv; uvicorn main:app --log-config log_config.yml --reload"
-  exec su app -c "printenv; uvicorn main:app --log-config log_config.yml --reload"
+  echo "printenv && cd /opt/app/api && uvicorn main:app --log-config log_config.yml --reload"
+  exec su app -c "printenv && cd api && uvicorn main:app --log-config log_config.yml --reload"
 else
-  echo "printenv; uvicorn.sh"
-  exec su app -c "printenv; uvicorn main:app --log-config log_config.yml --workers 2"
+  echo "printenv && cd /opt/app/api && uvicorn.sh"
+  exec su app -c "printenv && cd api && uvicorn main:app --log-config log_config.yml --workers 2"
 fi
