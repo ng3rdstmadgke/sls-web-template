@@ -22,6 +22,28 @@ provider:
   environment:
     APP_NAME: ${self:service}
     STAGE: ${self:provider.stage}
+  # APIGatewayでプライベートAPIを作成する
+  # https://docs.aws.amazon.com/ja_jp/apigateway/latest/developerguide/apigateway-private-apis.html
+  # Endpoint Type: https://www.serverless.com/framework/docs/providers/aws/events/apigateway#configuring-endpoint-types
+  endpointType: PRIVATE
+  vpcEndpointIds: 
+    - ${self:custom.profile.vpcEndpointId}
+  # VPCエンドポイント経由のリクエストのみを許可する設定
+  # ResourcePolicy: https://www.serverless.com/framework/docs/providers/aws/events/apigateway#resource-policy
+  apiGateway:
+    resourcePolicy:
+      - Effect: Deny
+        Principal: "*"
+        Action: execute-api:Invoke
+        Resource:
+          - execute-api:/*
+        Condition:
+          StringNotEquals:
+            aws:sourceVpce: ${self:custom.profile.vpcEndpointId}
+      - Effect: Allow
+        Principal: "*"
+        Action: execute-api:Invoke
+        Resource: "execute-api:/*"
 
 # デプロイパッケージに含めるファイル/ディレクトリを指定
 package:
@@ -50,7 +72,7 @@ resources:
     ApiRole:
       Type: AWS::IAM::Role
       Properties:
-        RoleName: slsWebTemplate-apiRole
+        RoleName: slsWebTemplate-apiRole-${self:provider.stage}
         AssumeRolePolicyDocument:
           Version: "2012-10-17"
           Statement:
