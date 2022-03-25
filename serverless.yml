@@ -31,6 +31,8 @@ provider:
   # VPCエンドポイント経由のリクエストのみを許可する設定
   # ResourcePolicy: https://www.serverless.com/framework/docs/providers/aws/events/apigateway#resource-policy
   apiGateway:
+    binaryMediaTypes:
+      - '*/*'
     resourcePolicy:
       - Effect: Deny
         Principal: "*"

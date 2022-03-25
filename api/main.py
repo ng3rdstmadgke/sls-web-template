@@ -2,11 +2,19 @@ import os
 from fastapi import FastAPI, APIRouter
 from mangum import Mangum
 from fastapi.staticfiles import StaticFiles
+from starlette.requests import Request
 
 router = APIRouter()
 @router.get("/hello")
-def read_root():
+def hello():
     return {"Hello": "World"}
+
+@router.get("/event")
+def event(request: Request):
+    print(request.scope["aws.context"])
+    return {
+        "event": request.scope["aws.event"],
+    }
 
 app = FastAPI()
 app.include_router(router, prefix="/api/v1")
