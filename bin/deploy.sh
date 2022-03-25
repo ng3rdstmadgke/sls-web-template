@@ -39,4 +39,4 @@ done
 set -e
 
 ${SCRIPT_DIR}/nuxt-generate.sh --stage ${STAGE_NAME}
-${SCRIPT_DIR}/sls.sh deploy --stage ${STAGE_NAME}
+invoke sls deploy --stage ${STAGE_NAME}
