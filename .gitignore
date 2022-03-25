@@ -41,7 +41,7 @@ __pycache__/
 # node
 ############################
 node_modules
-api/front
+front_dist
 
 ############################
 # Other

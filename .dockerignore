@@ -5,4 +5,5 @@
 **/.nuxt/
 **/dist/
 **/node_modules/
-api/front
+front_dist/
+**/__pycache__

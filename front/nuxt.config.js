@@ -84,7 +84,7 @@ export default {
   },
 
   // npm generate で生成されるビルド済みファイルの出力先ディレクトリの指定
-  // generate: {
-  //   dir: "../api/front"
-  // }
+  generate: {
+    dir: "../front_dist"
+  }
 }

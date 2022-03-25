@@ -42,5 +42,3 @@ cd $FRONT_DIR
 [ -n "$STAGE_NAME" ] && export API_GATEWAY_ROOT_PATH="/${STAGE_NAME}/"
 invoke npm install
 invoke npm run generate
-invoke rm -rf ${PROJECT_ROOT}/api/front
-invoke cp -r ${PROJECT_ROOT}/front/dist ${PROJECT_ROOT}/api/front

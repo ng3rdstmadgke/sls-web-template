@@ -50,7 +50,7 @@ package:
   patterns:
     - '!**' # すべてのファイルをexclude
     - 'api/**' # fastapiのソースコードをinclude
-    - 'front-dst/**' # nuxtのビルド青果物をinclude
+    - 'front_dist/**' # nuxtのビルド青果物をinclude
 
 functions:
   api:

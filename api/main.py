@@ -10,7 +10,7 @@ def read_root():
 
 app = FastAPI()
 app.include_router(router, prefix="/api/v1")
-SCRIPT_DIR = os.path.realpath(os.path.dirname(__file__))
-app.mount("/", StaticFiles(directory=f"{SCRIPT_DIR}/front", html=True), name="front")
+PROJECT_ROOT = os.path.realpath(os.path.dirname(os.path.dirname(os.path.realpath(__file__))))
+app.mount("/", StaticFiles(directory=f"{PROJECT_ROOT}/front_dist", html=True), name="front")
 
 handler = Mangum(app)

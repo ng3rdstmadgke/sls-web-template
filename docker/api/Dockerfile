@@ -42,16 +42,11 @@ COPY front /opt/app/front
 RUN cd /opt/app/front && \
     npm update -g npm && \
     npm install && \
-    npx nuxt generate && \
-    npm cache clean  --force
+    npx nuxt generate
 
 COPY api /opt/app/api
-RUN  rm -rf /opt/app/api/front && \
-     mv /opt/app/front/dist /opt/app/api/front && \
-     rm -rf /opt/app/front ~/npm
-
 COPY bin /opt/app/bin
-COPY docker/api/entrypoint.sh /usr/local/bin/entrypoint.sh
-RUN chmod +x /usr/local/bin/entrypoint.sh
-RUN ls /opt/app/api/front
-CMD ["/usr/local/bin/entrypoint.sh"]
+
+COPY docker/api/*-entrypoint.sh /usr/local/bin/
+RUN chmod +x /usr/local/bin/*-entrypoint.sh
+CMD ["/usr/local/bin/api-entrypoint.sh"]
