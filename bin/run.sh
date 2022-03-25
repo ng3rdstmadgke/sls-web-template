@@ -15,19 +15,16 @@ cat >&2 <<EOS
  -d | --daemon:
    バックグラウンドで起動
  -e | --env-file <ENV_PATH>:
-   apiコンテナ用の環境変数ファイルを指定(default=api/.env)
+   apiコンテナ用の環境変数ファイルを指定(default=.env)
  --debug:
    デバッグモードで起動
-
-[example]
- # ローカルのmysqlで起動する
- $(dirname $0)/run.sh -a api/test_env --debug
 EOS
 exit 1
 }
 
 SCRIPT_DIR="$(cd $(dirname $0); pwd)"
 PROJECT_ROOT="$(cd ${SCRIPT_DIR}/..; pwd)"
+API_DIR="$(cd ${PROJECT_ROOT}/api; pwd)"
 FRONT_DIR="$(cd ${PROJECT_ROOT}/front; pwd)"
 CONTAINER_DIR="$(cd ${PROJECT_ROOT}/docker; pwd)"
 DEBUG=
@@ -57,10 +54,11 @@ api_env_tmp="$(mktemp)"
 cat "$ENV_PATH" > "$api_env_tmp"
 
 trap "docker-compose -f docker-compose.yml down; rm $api_env_tmp $front_env_tmp" EXIT
-invoke export PROJECT_ROOT="$PROJECT_ROOT"
+invoke export API_DIR="$API_DIR"
 invoke export FRONT_DIR="$FRONT_DIR"
 invoke export ENV_PATH="$api_env_tmp"
 invoke export APP_NAME=$(get_app_name ${PROJECT_ROOT}/app_name)
+invoke export API_GATEWAY_ROOT_PATH="/dev/"
 cd "$CONTAINER_DIR"
 
 cat $ENV_PATH

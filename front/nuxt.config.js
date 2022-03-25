@@ -21,7 +21,7 @@ export default {
       { name: 'format-detection', content: 'telephone=no' }
     ],
     link: [
-      { rel: 'icon', type: 'image/x-icon', href: process.env.NUXTJS_ROOT_URL + 'favicon.ico' }
+      { rel: 'icon', type: 'image/x-icon', href: process.env.API_GATEWAY_ROOT_PATH + 'favicon.ico' }
     ]
   },
 
@@ -80,7 +80,7 @@ export default {
   },
 
   router: {
-    base: process.env.NUXTJS_ROOT_URL
+    base: process.env.API_GATEWAY_ROOT_PATH
   },
 
   // npm generate で生成されるビルド済みファイルの出力先ディレクトリの指定

@@ -37,6 +37,7 @@ COPY requirements.txt ./
 RUN pip install --upgrade pip && \
     pip install -r requirements.txt
 
+ENV API_GATEWAY_ROOT_PATH="/prd/"
 COPY front /opt/app/front
 RUN cd /opt/app/front && \
     npm update -g npm && \

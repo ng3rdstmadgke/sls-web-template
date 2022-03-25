@@ -7,3 +7,9 @@ services:
     env_file:
       - "${ENV_PATH}"
     network_mode: host
+  nginx:
+    image: ${APP_NAME}/nginx:latest
+    container_name: nginx
+    depends_on:
+      - api
+    network_mode: host

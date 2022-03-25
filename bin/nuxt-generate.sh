@@ -39,7 +39,7 @@ done
 
 set -e
 cd $FRONT_DIR
-[ -n "$STAGE_NAME" ] && export NUXTJS_ROOT_URL="/${STAGE_NAME}/"
+[ -n "$STAGE_NAME" ] && export API_GATEWAY_ROOT_PATH="/${STAGE_NAME}/"
 invoke npm install
 invoke npm run generate
 invoke rm -rf ${PROJECT_ROOT}/api/front

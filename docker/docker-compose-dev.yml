@@ -6,9 +6,27 @@ services:
     container_name: api
     volumes:
       - type: bind
-        source: "${PROJECT_ROOT}"
-        target: "/opt/app"
+        source: "${API_DIR}"
+        target: "/opt/app/api"
     command: /usr/local/bin/entrypoint.sh --debug
     env_file:
       - "${ENV_PATH}"
+    network_mode: host
+  front:
+    image: ${APP_NAME}/front:latest
+    container_name: front
+    volumes:
+      - type: bind
+        source: "${FRONT_DIR}"
+        target: "/opt/app/front"
+    command: /usr/local/bin/entrypoint.sh --debug
+    environment:
+      - API_GATEWAY_ROOT_PATH=${API_GATEWAY_ROOT_PATH}
+    network_mode: host
+  nginx:
+    image: ${APP_NAME}/nginx:latest
+    container_name: nginx
+    depends_on:
+      - api
+      - front
     network_mode: host
