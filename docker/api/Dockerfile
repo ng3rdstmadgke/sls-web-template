@@ -18,18 +18,13 @@ RUN echo 'ja_JP.UTF-8 UTF-8' >> /etc/locale.gen && \
     locale-gen && \
     update-locale LANG=ja_JP.UTF-8
 
+RUN ln -sf /usr/share/zoneinfo/Asia/Tokyo /etc/localtime
+
 RUN cd /tmp && \
     curl "https://awscli.amazonaws.com/awscli-exe-linux-x86_64-2.0.30.zip" -o "awscliv2.zip" && \
     unzip awscliv2.zip && \
     ./aws/install && \
     rm -r aws awscliv2.zip
-
-RUN curl -sL https://deb.nodesource.com/setup_lts.x | bash -
-RUN apt update && \
-    apt install -y nodejs && \
-    apt clean
-
-RUN ln -sf /usr/share/zoneinfo/Asia/Tokyo /etc/localtime
 
 RUN mkdir -p /opt/app
 WORKDIR /opt/app
@@ -37,16 +32,9 @@ COPY requirements.txt ./
 RUN pip install --upgrade pip && \
     pip install -r requirements.txt
 
-ENV API_GATEWAY_ROOT_PATH="/prd/"
-COPY front /opt/app/front
-RUN cd /opt/app/front && \
-    npm update -g npm && \
-    npm install && \
-    npx nuxt generate
-
 COPY api /opt/app/api
 COPY bin /opt/app/bin
 
-COPY docker/api/*-entrypoint.sh /usr/local/bin/
-RUN chmod +x /usr/local/bin/*-entrypoint.sh
+COPY docker/api/api-entrypoint.sh /usr/local/bin/
+RUN chmod +x /usr/local/bin/api-entrypoint.sh
 CMD ["/usr/local/bin/api-entrypoint.sh"]

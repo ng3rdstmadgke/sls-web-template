@@ -28,11 +28,12 @@ provider:
   endpointType: PRIVATE
   vpcEndpointIds: 
     - ${self:custom.profile.vpcEndpointId}
-  # VPCエンドポイント経由のリクエストのみを許可する設定
-  # ResourcePolicy: https://www.serverless.com/framework/docs/providers/aws/events/apigateway#resource-policy
   apiGateway:
+    # バイナリファイルを返却できるようにする設定
     binaryMediaTypes:
       - '*/*'
+    # VPCエンドポイント経由のリクエストのみを許可する設定
+    # ResourcePolicy: https://www.serverless.com/framework/docs/providers/aws/events/apigateway#resource-policy
     resourcePolicy:
       - Effect: Deny
         Principal: "*"

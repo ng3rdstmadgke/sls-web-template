@@ -9,17 +9,13 @@ nuxtアプリ起動コマンド
 [options]
  -h | --help:
    ヘルプを表示
- --debug:
-   デバッグモードで起動
 EOS
 exit 1
 }
 
-DEBUG=
 while [ "$#" != 0 ]; do
   case $1 in
     -h | --help      ) usage;;
-    --debug          ) DEBUG="1";;
     -* | --*         ) echo "$1 : 不正なオプションです" >&2; exit 1;;
     *                ) args+=("$1");;
   esac
@@ -38,10 +34,5 @@ export HOME=/home/app
 
 chown -R app:app /opt/app
 # 作成したユーザーでアプリケーションサーバーを起動
-if [ -n "$DEBUG" ]; then
-  echo "printenv && cd /opt/app/api && uvicorn main:app --log-config log_config.yml --reload"
-  exec su app -c "printenv && cd api && uvicorn main:app --log-config log_config.yml --reload"
-else
-  echo "printenv && cd /opt/app/api && uvicorn.sh"
-  exec su app -c "printenv && cd api && uvicorn main:app --log-config log_config.yml --workers 2"
-fi
+echo "printenv && uvicorn api.main:app --log-config api/log_config.yml --reload"
+exec su app -c "printenv && uvicorn api.main:app --log-config api/log_config.yml --reload"

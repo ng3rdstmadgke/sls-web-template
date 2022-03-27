@@ -11,25 +11,16 @@ services:
       - type: bind
         source: "${PROJECT_ROOT}/front_dist"
         target: "/opt/app/front_dist"
-    command: /usr/local/bin/api-entrypoint.sh --debug
+    command: /usr/local/bin/api-entrypoint.sh
     env_file:
       - "${ENV_PATH}"
     network_mode: host
   front:
-    image: ${APP_NAME}/api:latest
+    image: ${APP_NAME}/front:latest
     container_name: front
     volumes:
       - type: bind
         source: "${PROJECT_ROOT}/front"
         target: "/opt/app/front"
-    command: /usr/local/bin/front-entrypoint.sh --debug
-    environment:
-      - API_GATEWAY_ROOT_PATH=${API_GATEWAY_ROOT_PATH}
-    network_mode: host
-  nginx:
-    image: ${APP_NAME}/nginx:latest
-    container_name: nginx
-    depends_on:
-      - api
-      - front
+    command: /usr/local/bin/front-entrypoint.sh
     network_mode: host

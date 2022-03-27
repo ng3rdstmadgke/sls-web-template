@@ -1,4 +1,4 @@
-FROM nginx:1.21.5
+FROM node:16-bullseye-slim
 
 ARG proxy
 ARG no_proxy
@@ -19,5 +19,11 @@ RUN echo 'ja_JP.UTF-8 UTF-8' >> /etc/locale.gen && \
 
 RUN ln -sf /usr/share/zoneinfo/Asia/Tokyo /etc/localtime
 
-COPY ./docker/nginx/config/nginx.conf /etc/nginx/nginx.conf
-COPY ./docker/nginx/config/default.conf /etc/nginx/conf.d/default.conf
+RUN mkdir -p /opt/app
+WORKDIR /opt/app
+COPY front .
+RUN npm update -g npm && npm install && npm prune
+
+COPY docker/front/front-entrypoint.sh /usr/local/bin/
+RUN chmod +x /usr/local/bin/front-entrypoint.sh
+CMD ["/usr/local/bin/front-entrypoint.sh"]

@@ -39,11 +39,6 @@ vim ./profile/${STAGE_NAME}.yml
 ./bin/build.sh
 
 
-# 開発サーバー(STAGE_NAME=devで起動します)
-# http://localhost:8080/dev/
-./bin/run.sh --debug
-
-# 本番っぽいサーバー(STAGE_NAME=prdで起動します)
-# http://localhost:8080/prd/
+# http://localhost:3000/
 ./bin/run.sh
 ```
