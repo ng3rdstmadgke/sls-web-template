@@ -1,7 +1,6 @@
 fastapi[all]
 mangum
 PyMySQL
-mysqlclient
 SQLAlchemy
 alembic
 boto3
