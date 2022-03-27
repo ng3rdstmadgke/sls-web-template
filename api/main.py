@@ -8,9 +8,9 @@ from fastapi.middleware.cors import CORSMiddleware
 from sqlalchemy.orm import Session
 from sqlalchemy.sql import text
 
-from api.db import db
-from api.routers import item, token, user, role
-from api.env import get_env, Mode
+from api.api.db import db
+from api.api.routers import item, token, user, role
+from api.api.env import get_env, Mode
 
 if get_env().mode == Mode.PRD:
     app = FastAPI(

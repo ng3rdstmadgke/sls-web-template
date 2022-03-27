@@ -34,5 +34,5 @@ export HOME=/home/app
 
 chown -R app:app /opt/app
 # 作成したユーザーでアプリケーションサーバーを起動
-echo "printenv && cd /opt/app/api && uvicorn main:app --log-config log_config.yml --reload"
-exec su app -c "printenv && cd /opt/app/api && uvicorn main:app --log-config log_config.yml --reload"
+echo "printenv && uvicorn api.main:app --log-config api/log_config.yml --reload"
+exec su app -c "printenv && uvicorn api.main:app --log-config api/log_config.yml --reload"

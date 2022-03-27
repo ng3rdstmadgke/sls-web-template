@@ -7,14 +7,14 @@ from sqlalchemy.orm import Session
 from fastapi import Depends, APIRouter, HTTPException, Form, File, UploadFile
 from fastapi.responses import FileResponse, StreamingResponse
 
-from api import auth
-from api.db import db
-from api.env import get_env
-from api.utils import Utils
-from api.logger import logger, logging_error_exception, logging_warn_exception
-from api.models.user import User
-from api.cruds import item as crud_item
-from api.schemas.item import (
+from api.api import auth
+from api.api.db import db
+from api.api.env import get_env
+from api.api.utils import Utils
+from api.api.logger import logger, logging_error_exception, logging_warn_exception
+from api.api.models.user import User
+from api.api.cruds import item as crud_item
+from api.api.schemas.item import (
     ItemSchema,
     ItemSchemaWithoutContent,
     DataFormat,

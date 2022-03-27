@@ -10,7 +10,7 @@ ENV NO_PROXY=$no_proxy
 RUN printenv
 
 RUN apt update && \
-    apt install -y locales gcc libmariadb-dev unzip jq curl&& \
+    apt install -y locales gcc libmariadb-dev unzip jq curl && \
     apt install -y iputils-ping net-tools default-mysql-client less groff && \
     apt clean
 

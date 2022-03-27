@@ -1,8 +1,8 @@
 from typing import Optional, List
 from sqlalchemy.orm import Session
 
-from api.models.role import Role
-from api.schemas.role import RoleCreateSchema
+from api.api.models.role import Role
+from api.api.schemas.role import RoleCreateSchema
 
 # Session API: https://docs.sqlalchemy.org/en/14/orm/session_api.html#sqlalchemy.orm.Session
 # Query API: https://docs.sqlalchemy.org/en/14/orm/query.html#sqlalchemy.orm.Query

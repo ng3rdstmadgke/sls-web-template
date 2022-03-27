@@ -8,13 +8,13 @@ from fastapi import Depends, HTTPException, status
 from passlib.context import CryptContext
 from jose import jwt, JWTError
 
-from api.env import get_env
-from api.db import db
-from api.models.user import User
-from api.schemas.token import (
+from api.api.env import get_env
+from api.api.db import db
+from api.api.models.user import User
+from api.api.schemas.token import (
     TokenDataSchema
 )
-from api.logger import logger
+from api.api.logger import logger
 import traceback
 
 SECRET_KEY = get_env().secret_key

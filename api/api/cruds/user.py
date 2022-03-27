@@ -1,10 +1,10 @@
 from typing import Optional
 from sqlalchemy.orm import Session
 
-from api import auth
-from api.models.user import User
-from api.models.role import Role
-from api.schemas.user import UserCreateSchema, UserUpdateSchema
+from api.api import auth
+from api.api.models.user import User
+from api.api.models.role import Role
+from api.api.schemas.user import UserCreateSchema, UserUpdateSchema
 
 # Session API: https://docs.sqlalchemy.org/en/14/orm/session_api.html#sqlalchemy.orm.Session
 # Query API: https://docs.sqlalchemy.org/en/14/orm/query.html#sqlalchemy.orm.Query
