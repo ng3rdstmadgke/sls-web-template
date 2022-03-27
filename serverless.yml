@@ -6,7 +6,7 @@ custom:
   # NOTE: requirements.txtはserverless.ymlと同じディレクトリに配置する必要がある
   # TODO: Layerを別プロジェクトに分ける: https://blog.ikedaosushi.com/entry/2019/04/07/012612
   pythonRequirements:
-    dockerizePip: true # deploy時のパッケージングの際にpythonライブラリのビルドをdockerで行う設定
+    dockerizePip: non-linux # deploy時のパッケージングの際にpythonライブラリのビルドをdockerで行う設定
     layer: true # レイヤーを作成する
 
 provider:
@@ -22,7 +22,6 @@ provider:
   environment:
     APP_NAME: ${self:service}
     STAGE_NAME: ${self:provider.stage}
-    API_GATEWAY_BASE_PATH: /${self:provider.stage}
   # APIGatewayでプライベートAPIを作成する
   # https://docs.aws.amazon.com/ja_jp/apigateway/latest/developerguide/apigateway-private-apis.html
   # Endpoint Type: https://www.serverless.com/framework/docs/providers/aws/events/apigateway#configuring-endpoint-types
@@ -55,6 +54,7 @@ package:
     - '!**' # すべてのファイルをexclude
     - 'api/**' # fastapiのソースコードをinclude
     - 'front_dist/**' # nuxtのビルド青果物をinclude
+    - '!**/__pycache__'
 
 functions:
   api:
@@ -72,9 +72,9 @@ functions:
           method: ANY
           private: false
           cors: true
-    environment: ${self:custom.profile.environment}
     layers:
       - Ref: PythonRequirementsLambdaLayer
+    environment: ${self:custom.profile.apiEnvironment}
 
 # you can add CloudFormation resource templates here
 resources:

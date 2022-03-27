@@ -13,8 +13,9 @@ class Environment(BaseSettings):
     """
     app_name: str
     stage_name: str
-    mode: Mode
     aws_region: str
+    api_gateway_base_path: str = ""
+    mode: Mode
     db_dialect: str
     db_driver: str
     db_user: str

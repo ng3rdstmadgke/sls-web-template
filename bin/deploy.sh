@@ -19,14 +19,16 @@ exit 1
 }
 
 SCRIPT_DIR="$(cd $(dirname $0); pwd)"
+PROJECT_ROOT="$(cd ${SCRIPT_DIR}/..; pwd)"
+FRONT_DIR="$(cd ${PROJECT_ROOT}/front; pwd)"
 source "${SCRIPT_DIR}/lib/utils.sh"
 
-STAGE_NAME=
+STAGE=
 args=()
 while [ "$#" != 0 ]; do
   case $1 in
     -h | --help  ) usage;;
-    -s | --stage ) shift;STAGE_NAME="$1";;
+    -s | --stage ) shift;STAGE="$1";;
     -* | --*     ) error "$1 : 不正なオプションです" ;;
     *            ) args+=("$1");;
   esac
@@ -34,9 +36,20 @@ while [ "$#" != 0 ]; do
 done
 
 [ "${#args[@]}" != 0 ] && usage
-[ -z "${STAGE_NAME}" ] && error "-s | --stage オプションを指定してください"
+[ -z "${STAGE}" ] && error "-s | --stage オプションを指定してください"
+
+PROFILE_PATH="${PROJECT_ROOT}/profile/${STAGE}.yml"
+[ -r "$PROFILE_PATH" ] || error "デプロイ用プロファイルが見つかりません: $PROFILE_PATH"
 
 set -e
 
-${SCRIPT_DIR}/nuxt-generate.sh --stage ${STAGE_NAME}
-invoke sls deploy --stage ${STAGE_NAME}
+# nuxt app ビルド
+cd $FRONT_DIR
+export API_GATEWAY_BASE_PATH="/${STAGE}"
+invoke npm install
+invoke npm run generate
+
+# serverless デプロイ
+cd $PROJECT_ROOT
+invoke npm install
+invoke sls deploy --stage ${STAGE}

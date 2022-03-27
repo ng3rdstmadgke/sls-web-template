@@ -1,7 +1,7 @@
 <template>
   <div>
     <div>
-      <v-btn @click="hello">HELLO</v-btn>
+      <v-btn @click="hello">click</v-btn>
     </div>
     <h1>{{ message }}</h1>
   </div>
@@ -17,9 +17,9 @@ export default {
   methods: {
     hello() {
       let data = this.$data;
-      this.$axios.get("/api/hello")
+      this.$axios.get("/api/healthcheck")
         .then(res => {
-          data.message = res.data["Hello"];
+          data.message = res.data["message"];
         })
         .catch((e) => {
           console.error(e);

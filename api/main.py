@@ -26,7 +26,7 @@ else:
         redoc_url="/api/redoc",
         docs_url="/api/docs",
         openapi_url="/api/docs/openapi.json",
-        root_path=os.getenv("API_GATEWAY_BASE_PATH", "")
+        root_path=get_env().api_gateway_base_path
     )
     allow_origins = ["*"]
 

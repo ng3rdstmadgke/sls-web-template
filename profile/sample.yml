@@ -7,5 +7,14 @@ vpcEndpointId: vpce-xxxxxxxxxxxxxxxxx
 awsProfile: ""
 awsRegion: "ap-northeast-1"
 deploymentBucket: xxxxxxxxxxxxxxxxx
-environment:
-  SECRET_KEY: "xxxxxxxxxxxxxxxxxxxx"
+apiEnvironment:
+  API_GATEWAY_BASE_PATH: "/sample"
+  MODE: dev
+  DB_DIALECT: mysql
+  DB_DRIVER: mysqldb
+  DB_USER: xxxxxxxx
+  DB_PASSWORD: xxxxxxxx
+  DB_HOST: "xxxxxxxxxx.cluster-xxxxxxxxxxxx.ap-northeast-1.rds.amazonaws.com"
+  DB_PORT: 3306
+  DB_NAME: sls_web_template
+  SECRET_KEY: xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
