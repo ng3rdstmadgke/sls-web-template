@@ -21,7 +21,8 @@ provider:
     subnetIds: ${self:custom.profile.subnetIds}
   environment:
     APP_NAME: ${self:service}
-    STAGE: ${self:provider.stage}
+    STAGE_NAME: ${self:provider.stage}
+    API_GATEWAY_BASE_PATH: /${self:provider.stage}
   # APIGatewayでプライベートAPIを作成する
   # https://docs.aws.amazon.com/ja_jp/apigateway/latest/developerguide/apigateway-private-apis.html
   # Endpoint Type: https://www.serverless.com/framework/docs/providers/aws/events/apigateway#configuring-endpoint-types
@@ -71,7 +72,7 @@ functions:
           method: ANY
           private: false
           cors: true
-    environment: ${self:custom.profile.apienv}
+    environment: ${self:custom.profile.environment}
     layers:
       - Ref: PythonRequirementsLambdaLayer
 

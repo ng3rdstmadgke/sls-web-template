@@ -7,5 +7,5 @@ vpcEndpointId: vpce-xxxxxxxxxxxxxxxxx
 awsProfile: ""
 awsRegion: "ap-northeast-1"
 deploymentBucket: xxxxxxxxxxxxxxxxx
-apienv:
+environment:
   SECRET_KEY: "xxxxxxxxxxxxxxxxxxxx"
