@@ -29,7 +29,7 @@ CONTAINER_DIR="$(cd ${PROJECT_ROOT}/docker; pwd)"
 source "${SCRIPT_DIR}/lib/utils.sh"
 
 OPTIONS=
-ENV_PATH="${PROJECT_ROOT}/.env"
+ENV_PATH=
 args=()
 while [ "$#" != 0 ]; do
   case $1 in

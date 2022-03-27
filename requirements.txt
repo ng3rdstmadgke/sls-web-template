@@ -1,2 +1,8 @@
 fastapi[all]
 mangum
+mysqlclient
+SQLAlchemy
+alembic
+boto3
+python-jose[cryptography]
+passlib[bcrypt]

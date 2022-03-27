@@ -3,7 +3,7 @@
 ############################
 # Distribution / packaging
 .Python
-env/
+#env/
 build/
 develop-eggs/
 dist/
@@ -36,6 +36,7 @@ __pycache__/
 # env
 .env
 .venv/
+!**/sample.env
 
 ############################
 # node
