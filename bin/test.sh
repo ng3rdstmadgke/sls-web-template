@@ -40,9 +40,13 @@ cat "$ENV_PATH" > "$env_tmp"
 set -e
 trap 'rm $env_tmp;' EXIT
 
-docker run --rm -ti \
+# Pythonのテスト
+invoke docker run --rm -ti \
   --network host \
   --env-file "$env_tmp" \
   -v "${PROJECT_ROOT}:/opt/app" \
   "${APP_NAME}/api:latest" \
   su app -c "/opt/app/bin/lib/test.sh"
+
+# NuxtJSのテスト
+(cd ${PROJECT_ROOT}/front && invoke npm run test)
