@@ -37,6 +37,7 @@ var/
 *.env
 .venv/
 !sample.env
+!local.env
 
 ############################
 # node

@@ -52,3 +52,4 @@ cd "$PROJECT_ROOT"
 set -e
 invoke docker build $OPTIONS --rm -f docker/api/Dockerfile -t "${APP_NAME}/api:${TAG}" .
 invoke docker build $OPTIONS --rm -f docker/front/Dockerfile -t "${APP_NAME}/front:${TAG}" .
+invoke docker build $OPTIONS --rm -f docker/mysql/Dockerfile -t "${APP_NAME}/mysql:${TAG}" .
