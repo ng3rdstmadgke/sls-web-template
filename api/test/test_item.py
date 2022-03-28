@@ -1,11 +1,11 @@
 from fastapi.testclient import TestClient
 import pytest
 
-from api.db.base import Base
-from api.db.db import engine, SessionLocal
-from test.lib import utils as test_utils
+from ..main import app
+from ..api.db.base import Base
+from ..api.db.db import engine, SessionLocal
+from .lib import utils as test_utils
 
-from main import app
 
 client = TestClient(app)
 

@@ -1,9 +1,9 @@
 from fastapi.testclient import TestClient
 import pytest
 
-from main import app
-from api.db.base import Base
-from api.db.db import engine
+from ..main import app
+from ..api.db.base import Base
+from ..api.db.db import engine
 
 client = TestClient(app)
 

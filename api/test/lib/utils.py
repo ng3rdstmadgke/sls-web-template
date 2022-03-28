@@ -3,9 +3,9 @@ from sqlalchemy.orm import sessionmaker
 from functools import lru_cache
 
 from fastapi.testclient import TestClient
-from api.schemas.user import UserCreateSchema
-from api.schemas.role import RoleCreateSchema
-from api.cruds import (
+from ...api.schemas.user import UserCreateSchema
+from ...api.schemas.role import RoleCreateSchema
+from ...api.cruds import (
     user as crud_user,
     role as crud_role,
 )

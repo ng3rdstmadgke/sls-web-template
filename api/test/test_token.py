@@ -2,13 +2,13 @@ from fastapi.testclient import TestClient
 from jose import jwt
 import pytest
 
-from api.db.base import Base
-from api.db.db import engine, SessionLocal
-from test.lib import utils as test_utils
+from ..main import app
+from ..api.db.base import Base
+from ..api.db.db import engine, SessionLocal
+from .lib import utils as test_utils
 
 Base.metadata.drop_all(bind=engine)
 
-from main import app
 
 client = TestClient(app)
 
