@@ -1,3 +1,4 @@
+releaseTag: latest
 securityGroupIds:
   - sg-xxxxxxxxxxxxxxxxx
 subnetIds:

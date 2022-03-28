@@ -2,16 +2,10 @@ service: sls-web-template
 frameworkVersion: '3'
 custom:
   profile: ${file(./profile/${opt:stage}.yml)}
-  # serverless-python-requirements: https://www.serverless.com/plugins/serverless-python-requirements
-  # NOTE: requirements.txtはserverless.ymlと同じディレクトリに配置する必要がある
-  # TODO: Layerを別プロジェクトに分ける: https://blog.ikedaosushi.com/entry/2019/04/07/012612
-  pythonRequirements:
-    dockerizePip: non-linux # deploy時のパッケージングの際にpythonライブラリのビルドをdockerで行う設定
-    layer: true # レイヤーを作成する
 
 provider:
   name: aws
-  runtime: python3.8
+  runtime: provided
   stage: ${opt:stage, self:custom.profile.stage, "dev"}
   profile: ${self:custom.profile.awsProfile}
   region: ${self:custom.profile.awsRegion}
@@ -58,7 +52,8 @@ package:
 
 functions:
   api:
-    handler: api.main.handler
+    image:
+      uri: ${aws:accountId}.dkr.ecr.${self:provider.region}.amazonaws.com/${self:service}/lambda/${self:provider.stage}:${self:custom.profile.releaseTag}
     timeout: 29
     role: ApiRole
     events:
@@ -72,8 +67,6 @@ functions:
           method: ANY
           private: false
           cors: true
-    layers:
-      - Ref: PythonRequirementsLambdaLayer
     environment: ${self:custom.profile.apiEnvironment}
 
 # you can add CloudFormation resource templates here
@@ -108,6 +101,3 @@ resources:
                   Action:
                     - "dynamodb:*"
                     - "dax:*"
-
-plugins:
-  - serverless-python-requirements

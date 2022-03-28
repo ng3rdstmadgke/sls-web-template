@@ -12,6 +12,7 @@ dockerイメージビルドコマンド
 [options]
  -h | --help:
    ヘルプを表示
+ -s | --stage <STAGE_NAME>: (required)
  --no-cache:
    キャッシュを使わないでビルド
  --proxy:
@@ -31,22 +32,27 @@ APP_NAME=$(get_app_name ${PROJECT_ROOT}/app_name)
 
 TAG=latest
 OPTIONS=
+STAGE=
 args=()
 while [ "$#" != 0 ]; do
   case $1 in
-    -h | --help ) usage;;
-    --no-cache  ) OPTIONS="$OPTIONS --no-cache";;
-    --proxy     ) OPTIONS="$OPTIONS --build-arg proxy=$proxy --build-arg no_proxy=$no_proxy";;
-    -* | --*    ) error "$1 : 不正なオプションです" ;;
-    *           ) args+=("$1");;
+    -h | --help  ) usage;;
+    -s | --stage ) shift;STAGE="$1";;
+    --no-cache   ) OPTIONS="$OPTIONS --no-cache";;
+    --proxy      ) OPTIONS="$OPTIONS --build-arg proxy=$proxy --build-arg no_proxy=$no_proxy";;
+    -* | --*     ) error "$1 : 不正なオプションです" ;;
+    *            ) args+=("$1");;
   esac
   shift
 done
 
 [ "${#args[@]}" != 0 ] && usage
+[ -z "${STAGE}" ] && error "-s | --stage オプションを指定してください"
 
 cd "$PROJECT_ROOT"
 set -e
-invoke docker build $OPTIONS --rm -f docker/api/Dockerfile -t "${APP_NAME}/api:${TAG}" .
-invoke docker build $OPTIONS --rm -f docker/front/Dockerfile -t "${APP_NAME}/front:${TAG}" .
-invoke docker build $OPTIONS --rm -f docker/mysql/Dockerfile -t "${APP_NAME}/mysql:${TAG}" .
+invoke docker build $OPTIONS \
+  --rm \
+  --build-arg api_gateway_base_path=/${STAGE} \
+  -f docker/lambda/Dockerfile \
+  -t "${APP_NAME}/lambda:${TAG}" .

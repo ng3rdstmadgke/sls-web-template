@@ -20,7 +20,6 @@ exit 1
 
 SCRIPT_DIR="$(cd $(dirname $0); pwd)"
 PROJECT_ROOT="$(cd ${SCRIPT_DIR}/..; pwd)"
-FRONT_DIR="$(cd ${PROJECT_ROOT}/front; pwd)"
 source "${SCRIPT_DIR}/lib/utils.sh"
 
 STAGE=
@@ -42,12 +41,6 @@ PROFILE_PATH="${PROJECT_ROOT}/profile/${STAGE}.yml"
 [ -r "$PROFILE_PATH" ] || error "デプロイ用プロファイルが見つかりません: $PROFILE_PATH"
 
 set -e
-
-# nuxt app ビルド
-cd $FRONT_DIR
-export API_GATEWAY_BASE_PATH="/${STAGE}"
-invoke npm install
-invoke npm run generate
 
 # serverless デプロイ
 cd $PROJECT_ROOT

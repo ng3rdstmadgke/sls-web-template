@@ -2,7 +2,7 @@
 
 function usage {
 cat >&2 <<EOS
-コンテナ起動コマンド
+lambdaコンテナ起動コマンド
 
 [usage]
  $0 [options]
@@ -20,11 +20,9 @@ exit 1
 
 SCRIPT_DIR="$(cd $(dirname $0); pwd)"
 PROJECT_ROOT="$(cd ${SCRIPT_DIR}/..; pwd)"
-API_DIR="$(cd ${PROJECT_ROOT}/api; pwd)"
-FRONT_DIR="$(cd ${PROJECT_ROOT}/front; pwd)"
-CONTAINER_DIR="$(cd ${PROJECT_ROOT}/docker; pwd)"
-
 source "${SCRIPT_DIR}/lib/utils.sh"
+
+APP_NAME=$(get_app_name ${PROJECT_ROOT}/app_name)
 
 OPTIONS=
 ENV_PATH=
@@ -47,12 +45,11 @@ done
 api_env_tmp="$(mktemp)"
 cat "$ENV_PATH" > "$api_env_tmp"
 
-trap "docker-compose -f docker-compose.yml down; rm $api_env_tmp $front_env_tmp" EXIT
-invoke export PROJECT_ROOT="$PROJECT_ROOT"
-invoke export ENV_PATH="$api_env_tmp"
-invoke export APP_NAME=$(get_app_name ${PROJECT_ROOT}/app_name)
-cd "$CONTAINER_DIR"
 
-cat $ENV_PATH
-invoke docker-compose -f docker-compose-dev.yml down
-invoke docker-compose -f docker-compose-dev.yml up $OPTIONS
+invoke cat $ENV_PATH
+invoke docker run $OPTIONS \
+  --rm \
+  --name ${APP_NAME}-lambda \
+  --env-file "$ENV_PATH" \
+  -p 8080:8080 \
+  "${APP_NAME}/lambda:latest"
