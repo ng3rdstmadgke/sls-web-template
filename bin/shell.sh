@@ -49,4 +49,4 @@ docker run --rm -ti \
   --env-file "$env_tmp" \
   -v "${PROJECT_ROOT}:/opt/app" \
   "${APP_NAME}/api:latest" \
-  /bin/bash
+  su app

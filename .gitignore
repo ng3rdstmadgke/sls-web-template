@@ -50,3 +50,4 @@ front_dist
 .vscode/
 /profile/*
 !/profile/sample.yml
+.bash*
