@@ -4,7 +4,7 @@ from sqlalchemy.orm import relationship
 from sqlalchemy.sql.schema import ForeignKey
 from sqlalchemy.sql.sqltypes import DateTime
 
-from api.api.db.base_class import Base
+from ..db.base_class import Base
 
 class UserRole(Base):
     """usersテーブルとrolesテーブルの中間テーブル"""

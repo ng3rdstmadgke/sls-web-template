@@ -1,8 +1,8 @@
 from typing import List
 from pydantic import BaseModel
 
-from api.api.schemas.role import RoleSchema
-from api.api.schemas.item import ItemSchema
+from ..schemas.role import RoleSchema
+from ..schemas.item import ItemSchema
 
 class UserSchemaBase(BaseModel):
     """Userの参照・作成で共通して必要になるメンバを定義したスキーマ"""

@@ -4,8 +4,8 @@ from sqlalchemy.orm import relationship
 from sqlalchemy.dialects.mysql import MEDIUMTEXT
 from sqlalchemy.sql.sqltypes import DateTime, Enum
 
-from api.api.db.base_class import Base
-from api.api.schemas.item import DataFormat
+from ..db.base_class import Base
+from ..schemas.item import DataFormat
 
 class Item(Base):
     __tablename__ = "items"

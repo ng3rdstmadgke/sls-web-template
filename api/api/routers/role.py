@@ -4,11 +4,11 @@ from typing import List
 from sqlalchemy.orm import Session
 from fastapi import Depends, APIRouter, HTTPException, status
 
-from api.api import auth
-from api.api.db import db
-from api.api.models.user import User
-from api.api.schemas.role import RoleSchema, RoleCreateSchema
-from api.api.cruds import (
+from .. import auth
+from ..db import db
+from ..models.user import User
+from ..schemas.role import RoleSchema, RoleCreateSchema
+from ..cruds import (
     role as crud_role,
 ) 
 

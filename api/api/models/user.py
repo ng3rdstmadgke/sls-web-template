@@ -3,7 +3,7 @@ from sqlalchemy import Boolean, Column, Integer, String
 from sqlalchemy.orm import relationship
 from sqlalchemy.sql.sqltypes import DateTime
 
-from api.api.db.base_class import Base
+from ..db.base_class import Base
 
 class User(Base):
     __tablename__ = "users"

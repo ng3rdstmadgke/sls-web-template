@@ -3,11 +3,11 @@ from typing import List
 from sqlalchemy.orm import Session
 from fastapi import Depends, APIRouter, HTTPException
 
-from api.api import auth
-from api.api.db import db
-from api.api.models.user import User
-from api.api.schemas.user import UserSchema, UserCreateSchema, UserUpdateSchema
-from api.api.cruds import (
+from .. import auth
+from ..db import db
+from ..models.user import User
+from ..schemas.user import UserSchema, UserCreateSchema, UserUpdateSchema
+from ..cruds import (
     user as crud_user,
     role as crud_role,
 ) 
