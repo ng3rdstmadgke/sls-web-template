@@ -10,12 +10,11 @@ ENV NO_PROXY=$no_proxy
 RUN printenv
 
 # update package
-RUN yum update --security -y
+RUN yum update -y
 
 # install nodejs
-RUN curl -sL https://rpm.nodesource.com/setup_lts.x | bash -
-RUN yum check-update && \
-    yum install -y nodejs
+RUN curl -fsSL https://rpm.nodesource.com/setup_lts.x | bash -
+RUN yum install -y nodejs
 
 # pip install
 COPY requirements.txt .
