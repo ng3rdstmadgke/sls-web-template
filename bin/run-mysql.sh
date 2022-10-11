@@ -35,7 +35,7 @@ args=()
 while [ "$#" != 0 ]; do
   case $1 in
     -h | --help   ) usage;;
-    -d | --daemon ) shift;DAEMON=1;OPTIONS="$OPTIONS -d";;
+    -d | --daemon ) shift;DAEMON=1;;
     -* | --*      ) error "$1 : 不正なオプションです" ;;
     *             ) args+=("$1");;
   esac
@@ -53,18 +53,19 @@ set -e
 trap 'rm $env_tmp' EXIT
 export $(cat $env_tmp | grep -v -e "^ *#.*")
 
-cd "$CONTAINER_DIR"
-invoke docker run $OPTIONS \
-  --rm \
-  --name ${APP_NAME}-mysql \
-  --network host \
-  -e MYSQL_ROOT_PASSWORD=$DB_PASSWORD \
-  -e MYSQL_USER=$DB_USER \
-  -e MYSQL_PASSWORD=$DB_PASSWORD \
-  -e MYSQL_DATABASE=$DB_NAME \
-  "${APP_NAME}/mysql:latest"
 
+cd "$CONTAINER_DIR"
 if [ -n "$DAEMON" ]; then
+  invoke docker run $OPTIONS \
+    -d \
+    --rm \
+    --name ${APP_NAME}-mysql \
+    --network host \
+    -e MYSQL_ROOT_PASSWORD=$DB_PASSWORD \
+    -e MYSQL_USER=$DB_USER \
+    -e MYSQL_PASSWORD=$DB_PASSWORD \
+    -e MYSQL_DATABASE=$DB_NAME \
+    "${APP_NAME}/mysql:latest"
   invoke docker run \
     --rm \
     --name ${APP_NAME}-mysql-check \
@@ -73,4 +74,15 @@ if [ -n "$DAEMON" ]; then
     -v "${PROJECT_ROOT}:/opt/app" \
     "${APP_NAME}/api:latest" \
     /opt/app/bin/lib/check-mysql-boot.sh
+else
+  invoke docker run $OPTIONS \
+    -ti \
+    --rm \
+    --name ${APP_NAME}-mysql \
+    --network host \
+    -e MYSQL_ROOT_PASSWORD=$DB_PASSWORD \
+    -e MYSQL_USER=$DB_USER \
+    -e MYSQL_PASSWORD=$DB_PASSWORD \
+    -e MYSQL_DATABASE=$DB_NAME \
+    "${APP_NAME}/mysql:latest"
 fi
