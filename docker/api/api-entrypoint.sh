@@ -26,13 +26,23 @@ done
 HOST_UID=${LOCAL_UID:-1000}
 HOST_GID=${LOCAL_GID:-1000}
 
-# ホスト側の実行ユーザーと同一のUID, GIDを持つユーザーを作成
-echo "Starting with UID : $HOST_UID, GID: $HOST_GID"
-useradd -u $HOST_UID -o -m app
-groupmod -g $HOST_GID app
-export HOME=/home/app
+UNAME="app"
 
-chown -R app:app /opt/app
+# グループIDを指定してグループを作成
+# -g: グループIDを指定する
+groupadd -g $HOST_GID $UNAME
+
+# ユーザーIDを指定してグループを作成
+# -u: ユーザーIDを指定
+# -o: ユーザーIDが同じユーザーの作成を許す
+# -m: ホームディレクトリを作成する
+# -g: ユーザーが属するプライマリグループを指定する(グループID or グループ名)
+# -s: ログインシェルを指定する
+useradd -u $HOST_UID -o -m -g $HOST_GID -s /bin/bash $UNAME
+export HOME=/home/$UNAME
+
+# マウント先のを所有者作成したユーザーとグループに変更
+chown -R $HOST_UID:$HOST_GID /opt/app
+
 # 作成したユーザーでアプリケーションサーバーを起動
-echo "printenv && uvicorn api.main:app --log-config api/log_config.yml --reload"
-exec su app -c "printenv && uvicorn api.main:app --log-config api/log_config.yml --reload"
+exec su $UNAME -c "printenv && uvicorn api.main:app --log-config api/log_config.yml --reload"

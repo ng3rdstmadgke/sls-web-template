@@ -47,10 +47,12 @@ done
 api_env_tmp="$(mktemp)"
 cat "$ENV_PATH" > "$api_env_tmp"
 
-trap "docker-compose -f docker-compose.yml down; rm $api_env_tmp $front_env_tmp" EXIT
+trap "docker-compose -f docker-compose-dev.yml down; rm $api_env_tmp $front_env_tmp" EXIT
 invoke export PROJECT_ROOT="$PROJECT_ROOT"
 invoke export ENV_PATH="$api_env_tmp"
 invoke export APP_NAME=$(get_app_name ${PROJECT_ROOT}/app_name)
+invoke export LOCAL_UID=$(id -u)
+invoke export LOCAL_GID=$(id -g)
 cd "$CONTAINER_DIR"
 
 cat $ENV_PATH

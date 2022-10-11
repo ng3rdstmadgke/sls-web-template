@@ -12,6 +12,9 @@ services:
         source: "${PROJECT_ROOT}/front_dist"
         target: "/opt/app/front_dist"
     command: /usr/local/bin/api-entrypoint.sh
+    environment:
+      - LOCAL_UID=${LOCAL_UID}
+      - LOCAL_GID=${LOCAL_GID}
     env_file:
       - "${ENV_PATH}"
     network_mode: host
@@ -23,4 +26,7 @@ services:
         source: "${PROJECT_ROOT}/front"
         target: "/opt/app/front"
     command: /usr/local/bin/front-entrypoint.sh
+    environment:
+      - LOCAL_UID=${LOCAL_UID}
+      - LOCAL_GID=${LOCAL_GID}
     network_mode: host

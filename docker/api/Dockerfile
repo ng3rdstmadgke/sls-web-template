@@ -38,8 +38,4 @@ COPY bin /opt/app/bin
 COPY docker/api/*-entrypoint.sh /usr/local/bin/
 RUN chmod +x /usr/local/bin/*-entrypoint.sh
 
-ARG UID=1000
-ARG GID=1000
-RUN groupadd -g $GID app && \
-    useradd --home-dir /opt/app --no-create-home -s /bin/bash -u $UID -g $GID app
 CMD ["/usr/local/bin/api-entrypoint.sh"]

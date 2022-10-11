@@ -7,3 +7,4 @@
 **/node_modules/
 front_dist/
 **/__pycache__
+**/coverage/
