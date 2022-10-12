@@ -12,8 +12,14 @@ RUN printenv
 
 # update package
 RUN yum update -y && \
-    yum install -y locales gcc libmariadb-dev unzip jq curl shadow-utils vim tmux sudo && \
-    yum install -y iputils-ping net-tools default-mysql-client less groff
+    yum install -y locales gcc unzip jq curl shadow-utils vim tmux sudo wget && \
+    yum install -y iputils-ping net-tools less groff
+
+# install mysql
+RUN rpm --import https://repo.mysql.com/RPM-GPG-KEY-mysql-2022 && \
+    wget https://dev.mysql.com/get/mysql80-community-release-el7-1.noarch.rpm && \
+    yum localinstall -y mysql80-community-release-el7-1.noarch.rpm && \
+    yum install -y mysql-community-server
 
 # set timezone
 RUN ln -sf /usr/share/zoneinfo/Asia/Tokyo /etc/localtime
