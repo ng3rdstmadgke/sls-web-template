@@ -28,9 +28,6 @@ source "${SCRIPT_DIR}/lib/utils.sh"
 
 APP_NAME=$(get_app_name ${PROJECT_ROOT}/app_name)
 
-proxy="http://xxxxxxx.jp:7080"
-no_proxy="169.254.169.254,169.254.170.2"
-
 STAGE=
 BUILD_OPTIONS=
 BUILD_ONLY=

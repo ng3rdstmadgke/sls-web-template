@@ -2,16 +2,13 @@
 version: '3.2'
 services:
   api:
-    image: ${APP_NAME}/api:latest
+    image: ${APP_NAME}/dev:latest
     container_name: api
     volumes:
       - type: bind
-        source: "${PROJECT_ROOT}/api"
-        target: "/opt/app/api"
-      - type: bind
-        source: "${PROJECT_ROOT}/front_dist"
-        target: "/opt/app/front_dist"
-    command: /usr/local/bin/api-entrypoint.sh
+        source: "${PROJECT_ROOT}"
+        target: "/opt/app"
+    command: /opt/app/docker/dev/api-entrypoint.sh
     environment:
       - LOCAL_UID=${LOCAL_UID}
       - LOCAL_GID=${LOCAL_GID}
@@ -19,13 +16,13 @@ services:
       - "${ENV_PATH}"
     network_mode: host
   front:
-    image: ${APP_NAME}/front:latest
+    image: ${APP_NAME}/dev:latest
     container_name: front
     volumes:
       - type: bind
-        source: "${PROJECT_ROOT}/front"
-        target: "/opt/app/front"
-    command: /usr/local/bin/front-entrypoint.sh
+        source: "${PROJECT_ROOT}"
+        target: "/opt/app"
+    command: /opt/app/docker/dev/front-entrypoint.sh
     environment:
       - LOCAL_UID=${LOCAL_UID}
       - LOCAL_GID=${LOCAL_GID}

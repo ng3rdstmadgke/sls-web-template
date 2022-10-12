@@ -22,9 +22,8 @@ while [ "$#" != 0 ]; do
   shift
 done
 
-# HOST_UID=${変数名:-デフォルト値}
-HOST_UID=${LOCAL_UID:-1000}
-HOST_GID=${LOCAL_GID:-1000}
+HOST_UID=${LOCAL_UID}
+HOST_GID=${LOCAL_GID}
 
 UNAME="front"
 
@@ -39,9 +38,14 @@ groupadd -g $HOST_GID $UNAME
 # -g: ユーザーが属するプライマリグループを指定する(グループID or グループ名)
 # -s: ログインシェルを指定する
 useradd -u $HOST_UID -o -m -g $HOST_GID -s /bin/bash $UNAME
-export HOME=/home/$UNAME
+
+# sysadmin グループに追加
+usermod -aG sysadmin $UNAME
 
 # マウント先のを所有者作成したユーザーとグループに変更
 chown -R $HOST_UID:$HOST_GID /opt/app
 
-exec su $UNAME -c "cat /etc/group | grep '1000' ; cd /opt/app/front && npm install && npm run dev"
+export HOME=/home/$UNAME
+
+# nuxt 開発 server 起動
+exec su $UNAME -c "cd /opt/app/front && npm install && npm run dev"

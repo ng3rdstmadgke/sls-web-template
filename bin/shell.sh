@@ -16,6 +16,8 @@ DBログインコマンド
    awsのプロファイル名を指定 (default=default)
  --region <AWS_REGION>:
    awsのリージョンを指定 (default=ap-northeast-1)
+ --proxy:
+   プロキシ設定を有効化
 EOS
 exit 1
 }
@@ -28,6 +30,7 @@ APP_NAME=$(get_app_name ${PROJECT_ROOT}/app_name)
 
 AWS_PROFILE="default"
 AWS_REGION="ap-northeast-1"
+PROXY=
 args=()
 while [ "$#" != 0 ]; do
   case $1 in
@@ -35,6 +38,7 @@ while [ "$#" != 0 ]; do
     -e | --env-file ) shift;ENV_PATH="$1";;
     --profile       ) shift;AWS_PROFILE="$1";;
     --region        ) shift;AWS_REGION="$1";;
+    --proxy         ) PROXY="1";;
     -* | --*        ) error "$1 : 不正なオプションです" ;;
     *               ) args+=("$1");;
   esac
@@ -53,14 +57,20 @@ AWS_SECRET_ACCESS_KEY=$(aws --profile $AWS_PROFILE --region $AWS_REGION configur
 echo "AWS_ACCESS_KEY_ID=$AWS_ACCESS_KEY_ID" >> "$env_tmp"
 echo "AWS_SECRET_ACCESS_KEY=$AWS_SECRET_ACCESS_KEY" >> "$env_tmp"
 
+if [ -n "$PROXY" ]; then
+  echo "http_proxy=$proxy" >> "$env_tmp"
+  echo "https_proxy=$proxy" >> "$env_tmp"
+  echo "NO_PROXY=$no_proxy" >> "$env_tmp"
+fi
+
 set -e
-trap 'rm $env_tmp;' EXIT
-cat $env_tmp
+trap 'rm -f $env_tmp;' EXIT
+
 docker run --rm -ti \
   --network host \
   --env-file "$env_tmp" \
   -e LOCAL_UID=$(id -u) \
   -e LOCAL_GID=$(id -g) \
   -v "${PROJECT_ROOT}:/opt/app" \
-  "${APP_NAME}/api:latest" \
-  /usr/local/bin/shell-entrypoint.sh
+  "${APP_NAME}/dev:latest" \
+  /opt/app/docker/dev/shell-entrypoint.sh

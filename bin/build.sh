@@ -20,16 +20,12 @@ EOS
 exit 1
 }
 
-proxy="http://xxxxxxx.jp:7080"
-no_proxy="169.254.169.254,169.254.170.2"
-
 SCRIPT_DIR=$(cd $(dirname $0); pwd)
 PROJECT_ROOT=$(cd $(dirname $0)/..; pwd)
 source "${SCRIPT_DIR}/lib/utils.sh"
 
 APP_NAME=$(get_app_name ${PROJECT_ROOT}/app_name)
 
-TAG=latest
 OPTIONS=
 args=()
 while [ "$#" != 0 ]; do
@@ -47,6 +43,5 @@ done
 
 cd "$PROJECT_ROOT"
 set -e
-invoke docker build $OPTIONS --rm -f docker/api/Dockerfile -t "${APP_NAME}/api:${TAG}" .
-invoke docker build $OPTIONS --rm -f docker/front/Dockerfile -t "${APP_NAME}/front:${TAG}" .
-invoke docker build $OPTIONS --rm -f docker/mysql/Dockerfile -t "${APP_NAME}/mysql:${TAG}" .
+invoke docker build $OPTIONS --rm -f docker/mysql/Dockerfile -t "${APP_NAME}/mysql:latest" .
+invoke docker build $OPTIONS --rm -f docker/dev/Dockerfile -t "${APP_NAME}/dev:latest" .
